@@ -1,6 +1,8 @@
 // const axios = require('axios')
 // const url = 'http://checkip.amazonaws.com/';
-let response;
+
+var AWS = require('aws-sdk');
+var EC2 = new AWS.EC2();
 
 /**
  *
@@ -15,19 +17,14 @@ let response;
  * 
  */
 exports.lambdaHandler = async (event, context) => {
-    try {
-        // const ret = await axios(url);
-        response = {
-            'statusCode': 200,
-            'body': JSON.stringify({
-                message: 'hello world',
-                // location: ret.data.trim()
-            })
-        }
-    } catch (err) {
-        console.log(err);
-        return err;
-    }
-
-    return response
+    var params = {};
+    let result = await EC2.describeSecurityGroups().promise().then(
+        function(data) {
+            return data.SecurityGroups;
+        });
+        
+    return {
+        statusCode: 200,
+        body: JSON.stringify(result)
+    };
 };
