@@ -2,6 +2,9 @@
 // const url = 'http://checkip.amazonaws.com/';
 
 var AWS = require('aws-sdk');
+// Set the region 
+AWS.config.update({region: 'ap-southeast-2'});
+
 var EC2 = new AWS.EC2();
 
 /**
