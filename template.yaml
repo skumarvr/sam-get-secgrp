@@ -22,6 +22,20 @@ Resources:
           Properties:
             Path: /secgrp
             Method: get
+      Policies:
+      - Statement:
+        - Sid: EC2DescribeSecurityGroupsPolicy
+          Effect: Allow
+          Action:
+          - ec2:DescribeSecurityGroups
+          Resource: '*'
+  
+  GetSecGrpLambdaAuthFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: get-secgrp-lambdaAuth/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -36,3 +50,6 @@ Outputs:
   GetSecGrpFunctionIamRole:
     Description: "Implicit IAM Role created for Get Security Group function"
     Value: !GetAtt GetSecGrpFunctionRole.Arn
+  GetSecGrpLambdaAuthFunction:
+    Description: "ApiGateway Lambda Authorizer Function ARN"
+    Value: !GetAtt GetSecGrpLambdaAuthFunction.Arn

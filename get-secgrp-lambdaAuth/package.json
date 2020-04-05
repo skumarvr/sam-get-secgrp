@@ -1,0 +1,22 @@
+{
+  "name": "get_secgrp_lamndaauth",
+  "version": "1.0.0",
+  "description": "List all EC2 security groups in an AWS Account",
+  "main": "app.js",
+  "repository": "",
+  "author": "SAM CLI",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0"
+  },
+  "scripts": {
+    "test": "mocha tests/unit/"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "eslint": "^6.8.0",
+    "mocha": "^6.1.4",
+    "prettier": "^2.0.2"
+  }
+}
