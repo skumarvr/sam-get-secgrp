@@ -1,4 +1,4 @@
 {
     "userAgent": "E2E Testing",
-    "baseUrl": "https://bdwclcypp7.execute-api.ap-southeast-2.amazonaws.com/Stage/secgrp"
+    "baseUrl": "https://arsu47ljol.execute-api.ap-southeast-2.amazonaws.com/Stage/secgrp"
 }

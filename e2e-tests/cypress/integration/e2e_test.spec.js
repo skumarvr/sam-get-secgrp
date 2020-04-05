@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 context('Network Requests', () => {
     // var invokeUrl = 'https://bdwclcypp7.execute-api.ap-southeast-2.amazonaws.com/Stage/secgrp'
-    var invokeUrl = Cypress.env('invoke_url');
+    var invokeUrl = Cypress.config('baseUrl');
 
     it('cy.request() - make an XHR request', () => {
         cy.request({

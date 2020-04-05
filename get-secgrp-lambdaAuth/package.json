@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "mocha tests/unit/",
-    "coverage": "nyc mocha tests/unit/"
+    "coverage": "nyc --reporter=html mocha tests/unit/"
   },
   "devDependencies": {
     "chai": "^4.2.0",
