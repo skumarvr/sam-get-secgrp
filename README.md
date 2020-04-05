@@ -16,3 +16,8 @@ A. API Gateway + Lambda
     Write an end-to-end API test for the endpoint.
     Make response JSON:API 1.0 (https://jsonapi.org/format/1.0/) compatible.
 
+# Running E2E tests -
+./e2e-tests$ npm run test -- --env invoke_url=<<apigateway_invoke_url>>
+
+Example : 
+./e2e-tests$ npm run test -- --env invoke_url=https://bdwclcypp7.execute-api.ap-southeast-2.amazonaws.com/Stage/secgrp
