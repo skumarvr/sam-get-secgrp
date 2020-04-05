@@ -130,3 +130,7 @@ $RECYCLE.BIN/
 
 # AWS SAM Folder
 .aws-sam
+
+# Cypress video and screenshots folder
+screenshots
+videos
