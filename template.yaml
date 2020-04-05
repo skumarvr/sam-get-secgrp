@@ -10,6 +10,23 @@ Globals:
     Timeout: 3
 
 Resources:
+  GetSecGrpApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Auth:
+        DefaultAuthorizer: SecGrpLambdaTokenAuthorizer
+        Authorizers:
+          SecGrpLambdaTokenAuthorizer:
+            FunctionArn: !GetAtt GetSecGrpLambdaAuthFunction.Arn
+
+  GetSecGrpLambdaAuthFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: get-secgrp-lambdaAuth/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+
   GetSecGrpFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -20,8 +37,16 @@ Resources:
         GetSecGrp:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
+            RestApiId: !Ref GetSecGrpApi
             Path: /secgrp
             Method: get
+            # Auth:
+            #   DefaultAuthorizer: SecGrpLambdaTokenAuthorizer
+            #   Authorizers:
+            #     SecGrpLambdaTokenAuthorizer:
+            #       FunctionArn: !GetAtt GetSecGrpLambdaAuthFunction.Arn
+            #       Identity:
+            #         Header: 'tokenHeader'
       Policies:
       - Statement:
         - Sid: EC2DescribeSecurityGroupsPolicy
@@ -29,13 +54,6 @@ Resources:
           Action:
           - ec2:DescribeSecurityGroups
           Resource: '*'
-  
-  GetSecGrpLambdaAuthFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      CodeUri: get-secgrp-lambdaAuth/
-      Handler: app.lambdaHandler
-      Runtime: nodejs12.x
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
@@ -43,7 +61,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   GetSecGrpApi:
     Description: "API Gateway endpoint URL for Prod stage for Get Security Group function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/secgrp/"
+    Value: !Sub "https://${GetSecGrpApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/secgrp/"
   GetSecGrpFunction:
     Description: "Get Security Group Lambda Function ARN"
     Value: !GetAtt GetSecGrpFunction.Arn
@@ -53,3 +71,6 @@ Outputs:
   GetSecGrpLambdaAuthFunction:
     Description: "ApiGateway Lambda Authorizer Function ARN"
     Value: !GetAtt GetSecGrpLambdaAuthFunction.Arn
+  GetSecGrpLambdaAuthIamRole:
+    Description: "Implicit IAM Role created for Lambda Authorizer"
+    Value: !GetAtt  GetSecGrpLambdaAuthFunctionRole.Arn

@@ -6,47 +6,9 @@ const chai = require('chai');
 const expect = chai.expect;
 var event, context, callback;
 
-// Callback
-var callback = function(err, result) {
-    console.log('Inside callback!!!');
-    if (err) {
-        var resp = {
-            "principalId": "user",
-            "policyDocument": {
-                "Version": "2012-10-17",
-                "Statement": [
-                    {
-                    "Action": "execute-api:Invoke",
-                    "Effect": "Allow",
-                    "Resource": "arn:aws:execute-api:ap-southeast-2:123456789012:example/prod/POST/{proxy+}"
-                    }
-                ]
-            }
-        }
-        console.log(typeof(resp));
-        return resp;
-    }
-    if (result) {
-        var resp = {
-            "principalId": "user",
-            "policyDocument": {
-                "Version": "2012-10-17",
-                "Statement": [
-                    {
-                    "Action": "execute-api:Invoke",
-                    "Effect": "Allow",
-                    "Resource": "arn:aws:execute-api:ap-southeast-2:123456789012:example/prod/POST/{proxy+}"
-                    }
-                ]
-            }
-        }
-        console.log(typeof(resp));
-        return resp;
-    }
-}
-
 describe('Tests index', function () {
     it('verifies ALLOW response', function () {
+        // allow token
         event = {
             "type": "TOKEN",
             "authorizationToken": "allow",
@@ -67,6 +29,7 @@ describe('Tests index', function () {
     });
 
     it('verifies DENY response', async () => {
+        // deny token
         event = {
             "type": "TOKEN",
             "authorizationToken": "deny",
@@ -87,6 +50,7 @@ describe('Tests index', function () {
     });
 
     it('verifies UNAUTHORISED response', async () => {
+        // unauthorised token
         event = {
             "type": "TOKEN",
             "authorizationToken": "unauthorized",
@@ -103,9 +67,10 @@ describe('Tests index', function () {
     });
 
     it('verifies INVALID TOKEN response', async () => {
+        // invalid token
         event = {
             "type": "TOKEN",
-            "authorizationToken": "hello-world",
+            "authorizationToken": "invalid-token",
             "methodArn": "arn:aws:execute-api:ap-southeast-2:123456789012:example/prod/POST/{proxy+}"
         }
 
@@ -114,7 +79,7 @@ describe('Tests index', function () {
             console.log('result : ', result);
             expect( err ).to.exist;  
             expect( result ).to.not.exist;
-            expect( err ).to.equal('Error: Invalid token');
+            expect( err ).to.equal('Unauthorized');
         });
     });
 });
