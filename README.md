@@ -16,8 +16,19 @@ A. API Gateway + Lambda
     Write an end-to-end API test for the endpoint.
     Make response JSON:API 1.0 (https://jsonapi.org/format/1.0/) compatible.
 
-# Running E2E tests -
-./e2e-tests$ npm run test -- --env invoke_url=<<apigateway_invoke_url>>
+# Code structure
 
-Example : 
-./e2e-tests$ npm run test -- --env invoke_url=https://bdwclcypp7.execute-api.ap-southeast-2.amazonaws.com/Stage/secgrp
+e2e-tests : Contains the e2e testing code using cypress
+
+get-secgrp-lambdaAuth : Lambda Token Authorizer code files
+
+get-secgrp : Lambda function for the APIGateway endpoint
+
+
+
+APIGateway endpoint to list all EC2 security groups : /secgrp
+
+# Running E2E tests -
+./e2e-tests$ npm run test
+
+Note - Update the baseurl in the e2e-tests/config.json file.
