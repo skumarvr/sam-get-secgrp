@@ -13,15 +13,22 @@ var AWS = require('aws-sdk')
  *
  */
 exports.lambdaHandler = async (event, context) => {
-  var EC2 = new AWS.EC2()
-  var params = {}
-  const result = await EC2.describeSecurityGroups(params).promise().then(
-    function (data) {
-      return data.SecurityGroups
-    })
+  var EC2 = new AWS.EC2();
+  var params = {};
+  let result = {};
+  let status_code = 200;
+  try {
+    const securityGroupsDesc = await EC2.describeSecurityGroups(params).promise();
+    result = securityGroupsDesc.SecurityGroups;
+  }
+  catch (error) {
+    console.log(error);
+    result = error;
+    status_code = 500;
+  }
 
   return {
-    statusCode: 200,
+    statusCode: status_code,
     body: JSON.stringify(result)
   }
 }
