@@ -14,7 +14,7 @@
     "coverage": "nyc --reporter=html mocha tests/unit/"
   },
   "devDependencies": {
-    "aws-sdk": "^2.653.0",
+    "aws-sdk": "^2.814.0",
     "aws-sdk-mock": "^5.1.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
